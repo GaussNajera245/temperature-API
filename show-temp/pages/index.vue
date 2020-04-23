@@ -2,13 +2,13 @@
   <v-container fluid>
     <v-row  style="height: 48vh" >
       <v-col cols="6" >   
-        <v-card height="100%" >  Column  </v-card>
+        <v-card height="100%" >  {{sudo}}  </v-card>
       </v-col>
 
       <v-col cols="6">   
         <v-card height="100%"  >  
           <h3 style="padding:16px">
-            Termometer
+            {{info}}
           </h3> 
           <br> 
           <div style="text-align:center; margin-top=10px"> 
@@ -54,8 +54,31 @@
     data(){
       return{
         waiting: true,
-        socket: io("http://localhost:8001/")
+        socket: io("http://localhost:8001"),
+        info:{},
+        sudo: 0
       }
+    },
+    methods:{
+      now(){
+        const self = this;
+        setInterval(async () => {
+          self.sudo = self.sudo + 1; 
+          await self.socket.on("temperature-data", data => {
+            self.info = data;
+          })
+        /// NO FUNCIONA:VVVVV
+
+        }, 500);
+      }
+    },
+    watch:{
+      temp: function(){
+        console.log("listen")
+      }
+    },
+    mounted() {
+        this.now()
     }
   }
 </script>
