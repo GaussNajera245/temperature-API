@@ -3,28 +3,20 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
+const path = require('path');
 const empty = { temp:null, sensorID:null };
 const PORT = process.env.PORT || 8001;
 
-app.use(bodyParser.json());
-app.use( express.static(__dirname + '../../build') );
+app.use( bodyParser.json());
 
 io.on('connection', ()=>{
     console.log('user connected')
 })
 
-app.get('/', (req, res)=>{
-    res.json({
-        title:"Welcome to the temperature endpoint", 
-        message:"The POST request should have the following format",
-        example:{
-            temp:45,
-            sensorID:2
-        },
-        space:"",
-        message2:"The following routes are available:",
-        routes:["/temp", "/dummy"]
-    })
+app.use(express.static(__dirname + '../../build'));
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '../../build', 'index.html'));
 });
 
 app.post('/temp', (req, res) => {
