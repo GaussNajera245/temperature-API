@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
@@ -11,15 +11,38 @@ io.on('connection', ()=>{
 })
 
 app.get('/', (req, res)=>{
-    res.send("hello")
+    res.json({
+        title:"Welcome to the temperature endpoint", 
+        message:"The POST request should have the following format",
+        example:{
+            temp:45,
+            sensorID:2
+        },
+        space:"",
+        message2:"The following routes are available:",
+        routes:["/temp", "/dummy"]
+    })
 });
-    
+
 app.post('/temp', (req, res) => {
     io.sockets.emit("temp", req.body)
 
-    res.status(200).json({
-        message: "success"
-    })
+    setTimeout(()=>{
+        io.sockets.emit("temp", {temp:null,sensorID:null})
+    },5000);
+
+    res.status(200).json({ message: "success" });
+})
+
+app.post('/dummy', (req, res) => {
+    ///this is only tryout, later will delete :vv
+    io.sockets.emit("temp2", req.body)
+
+    setTimeout(()=>{
+        io.sockets.emit("temp2", {temp:null,sensorID:null})
+    },5000);
+
+    res.status(200).json({ message: "success" });
 })
             
 http.listen( 8001, () => {
