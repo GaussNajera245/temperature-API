@@ -1,3 +1,5 @@
 /endpoint/node_modules
 /show-temp/node_modules
 /see-temp/node_modules
+
+/show-temp

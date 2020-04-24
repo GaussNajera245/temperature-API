@@ -15,6 +15,8 @@ function App() {
   useEffect(()=>{
     socket.on("temp", (data) => setTemp1(data) );
     socket.on("temp2", (data) => setTemp2(data) );
+    socket.on("temp3", (data) => setTemp3(data) );
+    socket.on("temp4", (data) => setTemp4(data) );
   },[])
 
   return (

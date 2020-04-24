@@ -34,12 +34,32 @@ app.post('/temp', (req, res) => {
     res.status(200).json({ message: "success" });
 })
 
-app.post('/dummy', (req, res) => {
+app.post('/temp2', (req, res) => {
     ///this is only tryout, later will delete :vv
     io.sockets.emit("temp2", req.body)
 
     setTimeout(()=>{
         io.sockets.emit("temp2", {temp:null,sensorID:null})
+    },5000);
+
+    res.status(200).json({ message: "success" });
+})
+
+app.post('/temp3', (req, res) => {
+    io.sockets.emit("temp3", req.body)
+
+    setTimeout(()=>{
+        io.sockets.emit("temp3", {temp:null,sensorID:null})
+    },5000);
+
+    res.status(200).json({ message: "success" });
+})
+
+app.post('/temp4', (req, res) => {
+    io.sockets.emit("temp4", req.body)
+
+    setTimeout(()=>{
+        io.sockets.emit("temp4", {temp:null,sensorID:null})
     },5000);
 
     res.status(200).json({ message: "success" });
