@@ -7,6 +7,7 @@ const empty = { temp:null, sensorID:null };
 const PORT = process.env.PORT || 8001;
 
 app.use(bodyParser.json());
+app.use( express.static(__dirname + '../../build') );
 
 io.on('connection', ()=>{
     console.log('user connected')
