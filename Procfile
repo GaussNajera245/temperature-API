@@ -1,1 +1,1 @@
-web: nodemon ./src/endpoint/index.js & npm run start
+web: node ./src/endpoint/index.js
