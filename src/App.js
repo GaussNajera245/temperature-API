@@ -3,8 +3,8 @@ import Grid from '@material-ui/core/Grid';
 import './App.css';
 import io from 'socket.io-client';
 import Card from './components/Card';
-const socket = io('http://localhost:8001');
-
+const PORT = process.env.PORT || 8001;
+const socket = io(`localhost:${PORT}`);
 
 function App() {
   const [t1, setTemp1] = useState();

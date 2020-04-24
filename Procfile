@@ -1,1 +1,1 @@
-web: nodemon ./endpoint/index.js & node ./see-temp/build/index.html
+web: nodemon ./src/endpoint/index.js & npm run start
