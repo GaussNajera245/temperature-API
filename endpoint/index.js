@@ -3,7 +3,6 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
-const empty = { temp:null, sensorID:null };
 const PORT = process.env.PORT || 8001;
 
 app.use( bodyParser.json());
@@ -19,53 +18,28 @@ app.get('/*', (req, res)=>{
         example:{
             temp:45,
             sensorID:2
-        },
-        space:"",
-        message2:"The following routes are available:",
-        routes:["/temp", "/temp2", "/temp3", "/temp4"]
+        }
     })
 });
 
 app.post('/temp', (req, res) => {
-    io.sockets.emit("temp", req.body)
+    if(req.body.temp && req.body.sensorID){
 
-    setTimeout(()=>{
-        io.sockets.emit("temp", empty)
-    },5000);
+        if ( typeof(req.body.temp) !== "number" || typeof(req.body.sensorID) !== "number"){
+            res.status(200).json({ message: "all values must be number type" })
+        }else{
+            (req.body.sensorID > 4 || req.body.sensorID < 1)
+                ? res.status(200).json({ message: "wrong sensorID value, acepted values are [1,2,3,4]" })
+                : res.status(200).json({ message: "success" })
+        }
 
-    res.status(200).json({ message: "success" });
+    }
+    else(
+        res.status(200).json({message: "post sended, something wrong in key names or value is zero"})
+    )
+    io.sockets.emit("temp", req.body);
 })
 
-app.post('/temp2', (req, res) => {
-    io.sockets.emit("temp2", req.body)
-
-    setTimeout(()=>{
-        io.sockets.emit("temp2", empty)
-    },5000);
-
-    res.status(200).json({ message: "success" });
-})
-
-app.post('/temp3', (req, res) => {
-    io.sockets.emit("temp3", req.body)
-
-    setTimeout(()=>{
-        io.sockets.emit("temp3", empty)
-    },5000);
-
-    res.status(200).json({ message: "success" });
-})
-
-app.post('/temp4', (req, res) => {
-    io.sockets.emit("temp4", req.body)
-
-    setTimeout(()=>{
-        io.sockets.emit("temp4", empty)
-    },5000);
-
-    res.status(200).json({ message: "success" });
-})
-            
 http.listen( PORT, () => {
     console.log('Server on localhost:8001')
 })

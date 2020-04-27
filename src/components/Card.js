@@ -1,16 +1,14 @@
 import React from 'react'
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Grid, Paper, Typography, Hidden } from '@material-ui/core';
 
 const Card = (props) => {
     let status = <h2 style={{textAlign:"center"}}>NO SIGNAL</h2>;
-    let bkc = "#000000";
+    let bkc = "#000000"; //background-color
+
     const key = typeof(props.temp) !== "undefined";
-    let sensorID = "";
+    const {sensorID, temp} = props;
 
     if( key ){
-      const {temp} = props.temp;
-      sensorID = props.temp.sensorID;
-
       if(temp && temp<=37.5) {
           bkc = '#41c847';
           status = (
@@ -37,7 +35,7 @@ const Card = (props) => {
         </>
         )
       }
-      else if(typeof(props.temp) !== "undefined"){
+      else if( key ){
         bkc = "#9c9696";
         status = (
         <>
@@ -52,12 +50,14 @@ const Card = (props) => {
       <Grid item xs={6} style={{textAlign:"start", padding:6, height:"46.5vh"}}>
         <Paper style={{height:"100%", backgroundColor: bkc, color:"white"}}>
 
-        { key && <>
-          <Typography variant="h4" style={{textAlign:"start", padding:15}}>
-            Thermometer {sensorID}
-          </Typography>
-        </>}
-            <br /> <br /> <br />
+        { key && 
+          <>
+            <Typography variant="h4" style={{textAlign:"start", padding:15}}>
+              Thermometer {sensorID}
+            </Typography>
+          </>
+        }
+          <Hidden only={'xs'}>  <br /> <br /> </Hidden> <br /> 
           {status}
         </Paper>
       </Grid>
