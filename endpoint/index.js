@@ -24,11 +24,12 @@ app.get('/*', (req, res)=>{
 
 app.post('/temp', (req, res) => {
     if(req.body.temp && req.body.sensorID){
+        const {temp, sensorID} = req.body;
 
-        if ( typeof(req.body.temp) !== "number" || typeof(req.body.sensorID) !== "number"){
+        if ( typeof(temp) !== "number" || typeof(sensorID) !== "number"){
             res.status(200).json({ message: "all values must be number type" })
         }else{
-            (req.body.sensorID > 4 || req.body.sensorID < 1)
+            (sensorID > 4 || sensorID < 1)
                 ? res.status(200).json({ message: "wrong sensorID value, acepted values are [1,2,3,4]" })
                 : res.status(200).json({ message: "success" })
         }
